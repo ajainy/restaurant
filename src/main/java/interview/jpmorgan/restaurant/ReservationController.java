@@ -36,7 +36,7 @@ Constrains- restaurant operating hour - 10:00 am to 10:00 pm
 Deliverable - No need of db. Utilize map or file
  */
 
-@RestController
+@RestController("/reservations")
 @Slf4j
 public class ReservationController {
 

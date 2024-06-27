@@ -45,7 +45,7 @@ public class ReservationService {
   public Reservation addNewReservation(LocalDateTime dateOfReservation, String name) {
 
     if (!this.isValidDateTime(dateOfReservation)) {
-      throw new RuntimeException("Requested reservation date/time is not valid : " + dateOfReservation);
+      throw new ValidationException("Requested reservation date/time is not valid : " + dateOfReservation);
     }
 
     this.checkReservationAvailableForCustomer(dateOfReservation, name);
@@ -84,7 +84,7 @@ public class ReservationService {
       return "Reservation is canceled successfully for date " + dateOfReservation + " for customer " + name;
     }
 
-    return "No Reservation found for date " + dateOfReservation + " for customer " + name;
+    throw new NotFoundException("No Reservation found for date " + dateOfReservation + " for customer " + name);
 
   }
 
@@ -109,12 +109,12 @@ public class ReservationService {
 
     if (null != existingReservations) {
       if (existingReservations.size() >= NUM_OF_TABLES) {
-        throw new RuntimeException("No reservation is available at same time of " + dateOfReservation);
+        throw new ValidationException("No more reservation is available at same time of " + dateOfReservation);
       }
 
       for (Reservation reservation : existingReservations) {
         if (reservation.getName().equalsIgnoreCase(name)) {
-          throw new RuntimeException(
+          throw new ValidationException(
               "Customer with name " + name + " already has reservation at same time of " + dateOfReservation);
         }
       }
